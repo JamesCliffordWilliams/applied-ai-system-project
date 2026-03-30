@@ -19,8 +19,33 @@ Replace this paragraph with your own summary of what your version does.
 
 Explain your design in plain language.
 
+Recommendation systems compare things to a users normal preferences to predict what they will like. This simulation uses a content-based approach by matching song attributes directly to a user profile. It prioritizes mood and energy because they best represent a song’s overall vibe, while genre helps narrow down style. Acousticness is included to capture whether the user prefers a more acoustic or electronic sound. The goal is to recommend songs that closely match the user’s preferred feel, not just songs with high values.
+
+The Song object will use the following features: id, title, artist, genre, mood, energy, and acousticness. The UserProfile object will use favorite_genre, favorite_mood, target_energy, and likes_acoustic.
 Some prompts to answer:
 
+The system uses a content-based approach to recommend songs based on a user’s preferences. It takes in the user’s genre, mood, target energy, and acoustic preference. Then it loops through every song in the CSV file and calculates a score for each one based on how well it matches those preferences. After all songs are scored, they are sorted from highest to lowest, and the top k songs are returned as the recommendations.
+
+Algorithm Recipe
+
+Each song gets points based on a few rules. If the genre matches the user’s preferred genre, the song gets +2.0 points. If the mood matches, it gets +1.5 points. The system also looks at energy and gives a score based on how close the song’s energy is to the user’s target energy using this formula: 1 minus the absolute difference between the two values. This means songs closer to the preferred energy get higher scores. Finally, the system checks acoustic preference. If the user likes acoustic songs and the song has high acousticness, or if the user prefers non-acoustic songs and the song has low acousticness, it gets +0.5 points. All these values are added together to get the final score.
+
+Potential Biases
+
+This system might over-prioritize genre, which could cause it to miss songs from other genres that still match the user’s mood and energy. It also mainly relies on energy to measure similarity, which simplifies how people actually experience music. The acoustic preference is handled in a basic way, so it may not fully reflect how users perceive sound. Because of this, the recommendations might be somewhat limited even if they seem accurate based on the rules.
+
+![Output](Screenshot%202026-03-30%20020900.png)
+
+## System Evaluation Outputs
+
+### High-Energy Pop
+![High Energy Pop](Screenshot%202026-03-30%20021718.png)
+
+### Chill Lofi
+![Chill Lofi](Screenshot%202026-03-30%20021714.png)
+
+### Intense Rock / Edge Case
+![Intense Rock](Screenshot%202026-03-30%20021710.png)
 - What features does each `Song` use in your system
   - For example: genre, mood, energy, tempo
 - What information does your `UserProfile` store
@@ -165,6 +190,8 @@ You can think about:
 ---
 
 ## 6. Limitations and Bias
+
+The system shows a bias toward energy similarity, which often overrides other important features like mood and genre. During testing, high-energy songs were frequently recommended even when they did not match the user’s desired mood or genre, such as “Gym Hero” appearing for users who wanted sad or different-genre music. This creates a filter effect where songs with similar intensity are prioritized over songs that better match the user’s emotional preference. Additionally, the system does not strongly penalize mismatches, meaning songs can still rank highly even if they only match one feature. As a result, the recommender may produce less accurate results for users with specific or conflicting preferences.
 
 Where does your recommender struggle
 
