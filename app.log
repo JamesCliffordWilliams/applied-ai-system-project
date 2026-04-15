@@ -1,0 +1,2 @@
+INFO:root:User query: study music
+INFO:root:Results: [{'song': 'Lo-fi Beats', 'mood': 'study', 'tempo': 'slow'}, {'song': 'Focus Flow', 'mood': 'study', 'tempo': 'medium'}]
